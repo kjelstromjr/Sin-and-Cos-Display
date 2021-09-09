@@ -8,6 +8,7 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 public class Main implements Runnable {
     Thread thread;
@@ -16,6 +17,8 @@ public class Main implements Runnable {
     //int tick = 10000000, tickCount = 0;
     int x = 0, y = 0;
     double deg = 0;
+    ArrayList<int[]> sin = new ArrayList<int[]>();
+    ArrayList<int[]> cos = new ArrayList<int[]>();
 
 
     public Main() {
@@ -58,6 +61,30 @@ public class Main implements Runnable {
         if (deg >= 360) {
             deg = 0.0;
         }
+
+        ArrayList<int[]> remove = new ArrayList<int[]>();
+        for (int[] circle : sin) {
+            circle[0]++;
+            if (circle[0] >= w.WIDTH) {
+                remove.add(circle);
+            }
+        }
+        for (int[] circle : remove) {
+            sin.remove(circle);
+        }
+        for (int[] circle : cos) {
+            circle[1]--;
+            if (circle[1] <= 0) {
+                remove.add(circle);
+            }
+        }
+        for (int[] circle : remove) {
+            cos.remove(circle);
+        }
+        int[] sinCircle = {w.WIDTH / 2 + 100, y};
+        sin.add(sinCircle);
+        int[] cosCircle = {x, w.HEIGHT / 2 - 100};
+        cos.add(cosCircle);
     }
 
     public void draw() {
@@ -76,6 +103,15 @@ public class Main implements Runnable {
         g.drawLine(w.WIDTH / 2, w.HEIGHT / 2, x + 5, y + 5);
         g.drawLine(w.WIDTH / 2, w.HEIGHT / 2, x + 5, w.HEIGHT / 2);
         g.drawLine(x + 5, y + 5, x + 5, w.HEIGHT / 2);
+        for (int[] circle : sin) {
+            g.fillOval(circle[0], circle[1], 2, 2);
+        }
+        for (int[] circle : cos) {
+            g.fillOval(circle[0], circle[1], 2, 2);
+        }
+        g.drawLine(x + 5, y + 5, sin.get(sin.size() - 1)[0], sin.get(sin.size() - 1)[1]);
+        g.drawLine(x + 5, y + 5, cos.get(cos.size() - 1)[0], cos.get(cos.size() - 1)[1]);
+        //System.out.println(sin.size() + ", " + cos.size());
         g.dispose();
         bs.show();
     }
