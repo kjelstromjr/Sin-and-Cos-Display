@@ -23,7 +23,7 @@ public class Window {
 
         frame.setSize(WIDTH, HEIGHT);
 		frame.setVisible(true);
-        frame.setTitle("Physics");
+        frame.setTitle("Sin and Cos");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
